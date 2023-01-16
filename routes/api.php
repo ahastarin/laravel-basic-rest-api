@@ -16,3 +16,6 @@ Route::post('login', SignInController::class);
 Route::post('logout', LogoutController::class);
 
 Route::post('create-new-article', [ArticleController::class, 'store']);
+
+Route::get('/', [ArticleController::class, 'index']);
+Route::get('articles/{article}', [ArticleController::class, 'show']);

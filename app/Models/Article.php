@@ -9,15 +9,22 @@ class Article extends Model
 {
     use HasFactory;
 
+    protected $table = 'articles';
+
     protected $fillable=["title", "slug", "body", "subject_id", "user_id"];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function subject()
     {
-        $this->belongsTo(Subject::class);
+        return $this->belongsTo(Subject::class);
     }
 }

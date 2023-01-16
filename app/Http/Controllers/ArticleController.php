@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ArticleCollection;
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -15,7 +17,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        $article = Article::get();
+        return new ArticleCollection($article);
     }
 
     /**
@@ -47,9 +50,14 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Article $article)
     {
-        //
+        return new ArticleResource($article);
+// 
+        // return response([
+        //     "data" =>  new ArticleResource($article),
+        //     "status" => "success"
+        // ]);
     }
 
     /**
