@@ -29,16 +29,7 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            "title" => "required|min:5|max:25",
-            "body" => "required",
-            "subject_id" => "required"
-        ]);
-
-        $validatedData["user_id"] = auth()->user()->id;
-        $validatedData["slug"] = \Str::slug($request['title']);
-
-        $articles = Article::create($validatedData);
+        $articles = Article::create($this->articleValidation($request));
 
         return $articles;
 
@@ -67,9 +58,15 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Article $article)
     {
-        //
+        Article::where('slug', $article->slug)
+            ->update($this->articleValidation($request));
+
+        return response([
+            "data" => $this->articleValidation($request),
+            "status" => "success"
+        ]);
     }
 
     /**
@@ -81,5 +78,19 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function articleValidation(Request $request)
+    {
+        $validatedData = $request->validate([
+            "title" => "required|min:5|max:25",
+            "body" => "required",
+            "subject_id" => "required"
+        ]);
+
+        $validatedData["user_id"] = auth()->user()->id;
+        $validatedData["slug"] = \Str::slug($request['title']);
+
+        return $validatedData;
     }
 }
