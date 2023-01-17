@@ -60,13 +60,12 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        Article::where('slug', $article->slug)
-            ->update($this->articleValidation($request));
+        // Article::where('slug', $article->slug)
+        //     ->update($this->articleValidation($request));
 
-        return response([
-            "data" => $this->articleValidation($request),
-            "status" => "success"
-        ]);
+        $article->update($this->articleValidation($request));
+
+        return new ArticleResource($article);
     }
 
     /**
@@ -75,9 +74,11 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Article $article)
     {
-        //
+        $article->destroy($article->id);
+
+        return "article has been deleted";
     }
 
     public function articleValidation(Request $request)

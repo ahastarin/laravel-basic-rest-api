@@ -17,6 +17,7 @@ Route::post('logout', LogoutController::class);
 
 Route::post('create-new-article', [ArticleController::class, 'store']);
 Route::patch('update-article/{article}', [ArticleController::class, 'update']);
+Route::delete('delete-article/{article}', [ArticleController::class, 'destroy']);
 
 Route::get('/', [ArticleController::class, 'index']);
 Route::get('articles/{article}', [ArticleController::class, 'show']);
